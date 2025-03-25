@@ -1,13 +1,8 @@
 import express from "express";
-import { Task } from "./models/task.model";
 import db from "./db/database";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-
-//DEV DATA
-let masterTaskList: Task[] = [];
-//DEV DATA
 
 app.use(express.json());
 
