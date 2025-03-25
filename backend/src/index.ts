@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.json());
 
+//TODO - add comment for function
 function getAllTasks(res: any, successCode: number) {
 	//query the database for all the records from task table
 	db.all(`SELECT * FROM tasks`, [], (error, rows) => {
@@ -121,7 +122,7 @@ app.post("/tasks", (req, res) => {
 		});
 	}
 });
-
+//TODO - add comment for endpoint
 app.put("/tasks/:id", (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
