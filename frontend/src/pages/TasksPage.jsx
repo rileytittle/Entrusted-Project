@@ -8,7 +8,7 @@ function TasksPage() {
 		axios
 			.get("http://localhost:3000/tasks")
 			.then((res) => {
-				setTasks(res.rows);
+				setTasks(res.data);
 			})
 			.catch((error) => {
 				//handle the error
@@ -16,11 +16,19 @@ function TasksPage() {
 	});
 	return (
 		<div>
-			{tasks.map((task) => (
-				<p>
-					{task.id}, {task.name}, {task.done}
-				</p>
-			))}
+			{tasks.length > 0 ? (
+				<div>
+					{tasks.map((task) => (
+						<div key={task.id}>
+							<p>
+								{task.id}, {task.name}, {task.done}
+							</p>
+						</div>
+					))}
+				</div>
+			) : (
+				<p>Tasks loading</p>
+			)}
 		</div>
 	);
 }
