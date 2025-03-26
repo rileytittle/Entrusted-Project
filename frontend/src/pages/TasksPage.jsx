@@ -15,20 +15,26 @@ function TasksPage() {
 			});
 	});
 	return (
-		<div>
-			{tasks.length > 0 ? (
-				<div>
-					{tasks.map((task) => (
-						<div key={task.id}>
-							<p>
-								{task.id}, {task.name}, {task.done}
-							</p>
-						</div>
-					))}
-				</div>
-			) : (
-				<p>Tasks loading</p>
-			)}
+		<div className="card">
+			<div className="card-body">
+				<h5 className="card-title">Tasks</h5>
+				{tasks.length > 0 ? (
+					<div>
+						{tasks.map((task) => (
+							<div className="card mb-3" key={task.id}>
+								<div className="card-body">
+									{task.id}, {task.name}, {task.done}
+								</div>
+							</div>
+						))}
+					</div>
+				) : (
+					<p>Tasks loading</p>
+				)}
+				<a href="#" class="btn btn-primary">
+					Add another
+				</a>
+			</div>
 		</div>
 	);
 }
