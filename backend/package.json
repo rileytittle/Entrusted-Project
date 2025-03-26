@@ -11,10 +11,12 @@
 	"author": "Riley \"Cole\" Tittle",
 	"license": "ISC",
 	"dependencies": {
+		"cors": "^2.8.5",
 		"express": "^4.21.2",
 		"sqlite3": "^5.1.7"
 	},
 	"devDependencies": {
+		"@types/cors": "^2.8.17",
 		"@types/express": "^5.0.1",
 		"@types/node": "^22.13.13",
 		"ts-node-dev": "^2.0.0",

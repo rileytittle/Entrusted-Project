@@ -1,11 +1,16 @@
 import express from "express";
 import db from "./db/database";
+import cors from "cors";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
-
+app.use(
+	cors({
+		origin: "http://localhost:5173",
+	})
+);
 //TODO - add comment for function
 function getAllTasks(res: any, successCode: number) {
 	//query the database for all the records from task table
