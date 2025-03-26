@@ -9,7 +9,16 @@ function TasksPage() {
 
 	function createTask() {
 		if (newTaskName) {
-			console.log("this will create a task with name:", newTaskName);
+			axios
+				.post("http://localhost:3000/tasks", {
+					task_name: newTaskName,
+				})
+				.then((res) => {
+					console.log("will this cause a re-rendering???");
+				})
+				.catch((error) => {
+					console.log("Error posting new task");
+				});
 			setNewTaskName("");
 		}
 		setModalVisible(false);
