@@ -10,11 +10,11 @@ const app = express();
 app.use(express.json());
 
 //cors set up for dev
-// app.use(
-// 	cors({
-// 		origin: "http://localhost:5173",
-// 	})
-// );
+app.use(
+	cors({
+		origin: "http://localhost:5173",
+	})
+);
 
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 //TODO - add comment for function
