@@ -27,39 +27,7 @@ function getAllTasks(res: any, successCode: number) {
 		}
 	});
 }
-/**
- * Middleware to send the master list of all tasks.
- *
- * This middleware sends back the entire list of tasks in the response.
- * If there is an unexpected error, it throws 500 status code so that the
- * server does not crash.
- *
- * @param {Express.Request} req - The request object, containing the incoming HTTP request.
- * @param {Express.Response} res - The response object, used to send the HTTP response.
- *
- * @returns {Task[]} The list of all tasks.
- *
- * @throws {400} If there is a problem executing the query.
- * @throws {500} If there is an unexpected error, status code 500 is sent.
- *
- * @example
- * [
- * 	{ 	"id": 1,
- * 		"name": "Finish backend api",
- * 		"done": 0
- * 	},
- * 	{
- * 		"id": 2,
- * 		"name": "Finish frontend",
- * 		"done": 0
- *  },
- * 	{
- * 		"id": 3,
- * 		"name": "Complete documentation",
- * 		"done": 0
- * 	}
- * ]
- */
+
 app.get("/tasks", (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
@@ -73,31 +41,13 @@ app.get("/tasks", (req, res) => {
 		});
 	}
 });
-/**
- * Middleware to create a new task.
- *
- * This middleware checks if the request body has a task_name field
- * of type string. If it does, it creates a new task and adds it
- * to the master list of tasks.
- * If not, it sends back a response with a 400 status code.
- * If there is an unexpected error, it throws 500 status code so that the
- * server does not crash.
- *
- * @param {Express.Request} req - The request object, containing the incoming HTTP request.
- * @param {Express.Response} res - The response object, used to send the HTTP response.
- *
- * @returns {Task[]} The updated master list of tasks
- *
- * @throws {400} If "task_name" does not exist in request body or if it is not of type string.
- * @throws {500} If there is an unexpected error, status code 500 is sent.
- *
- */
+
 app.post("/tasks", (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {
 		//check if task_name exists and is a string
-		if (req.body.task_name && typeof req.body.task_name == "string") {
+		if (req.body.task_name) {
 			db.run(
 				`INSERT INTO tasks (name, done)
 				VALUES (?, ?)`,
@@ -127,13 +77,53 @@ app.post("/tasks", (req, res) => {
 		});
 	}
 });
+
+app.delete("/tasks/:id", (req, res) => {
+	try {
+		if (!isNaN(parseInt(req.params.id))) {
+			db.run(
+				`DELETE FROM tasks
+				WHERE id = ?`,
+				[parseInt(req.params.id)],
+				function (error) {
+					if (error) {
+						res.status(500).send({
+							message:
+								"An error occured while executing the query",
+							error: error,
+						});
+					}
+					if (this.changes === 0) {
+						// No rows were deleted
+						return res.status(404).send({
+							message: "Task not found",
+						});
+					}
+					res.status(204).send({
+						message: "Task successfully deleted",
+					});
+				}
+			);
+		} else {
+			//if id is not of type number, send error and 400 status code.
+			res.status(400).send({
+				message: "Parameter id must be of type number",
+			});
+		}
+	} catch (error) {
+		res.status(500).send({
+			message: "There was an error deleting the task",
+			error: error,
+		});
+	}
+});
 //TODO - add comment for endpoint
 app.put("/tasks/:id", (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {
 		//check if param id is of type number
-		if (typeof parseInt(req.params.id) == "number") {
+		if (!isNaN(parseInt(req.params.id))) {
 			db.run(
 				`UPDATE tasks
 			SET done = CASE
@@ -143,7 +133,7 @@ app.put("/tasks/:id", (req, res) => {
 			END
 			WHERE id = ?`,
 				[parseInt(req.params.id)],
-				(error) => {
+				function (error) {
 					if (error) {
 						res.status(400).send({
 							message:
@@ -151,9 +141,17 @@ app.put("/tasks/:id", (req, res) => {
 							error: error,
 						});
 					}
+					if (this.changes === 0) {
+						// No rows were deleted
+						return res.status(404).send({
+							message: "Task not found",
+						});
+					}
+					res.status(200).send({
+						message: "Task successfully updated",
+					});
 				}
 			);
-			getAllTasks(res, 200);
 		} else {
 			//if id is not of type number, send error and 400 status code.
 			res.status(400).send({
