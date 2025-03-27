@@ -12,7 +12,6 @@ function TasksPage() {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [deletingCard, setDeletingCard] = useState(null);
 	const [creatingCard, setCreatingCard] = useState(null);
-
 	function createTask() {
 		if (newTaskName) {
 			{
@@ -36,6 +35,7 @@ function TasksPage() {
 						setTimeout(() => {
 							setCreatingCard(null);
 						}, 205);
+						getAllTasks();
 					})
 					.catch((error) => {
 						setErrorOccurred(true);
@@ -63,6 +63,7 @@ function TasksPage() {
 				.then((res) => {
 					setErrorMessage("");
 					setErrorOccurred(false);
+					getAllTasks();
 				})
 				.catch((error) => {
 					setErrorOccurred(true);
@@ -86,6 +87,7 @@ function TasksPage() {
 					.then((res) => {
 						setErrorMessage("");
 						setErrorOccurred(false);
+						getAllTasks();
 					})
 					.catch((error) => {
 						setErrorOccurred(true);
@@ -96,7 +98,7 @@ function TasksPage() {
 			}, 300);
 		}
 	}
-	useEffect(() => {
+	function getAllTasks() {
 		axios
 			.get("http://localhost:3000/tasks", {
 				headers: {
@@ -104,6 +106,8 @@ function TasksPage() {
 				},
 			})
 			.then((res) => {
+				sessionStorage.setItem("localTasks", res.data);
+				console.log("Hello");
 				if (filter === "-1") {
 					setTasks(res.data);
 				} else {
@@ -113,6 +117,7 @@ function TasksPage() {
 						)
 					);
 				}
+				//console.log(tasks)
 				setLoading(false);
 				setErrorOccurred(false);
 			})
@@ -123,7 +128,10 @@ function TasksPage() {
 					setErrorMessage(error.response.data.message);
 				}
 			});
-	});
+	}
+	useEffect(() => {
+		getAllTasks();
+	}, []);
 
 	return (
 		<>
