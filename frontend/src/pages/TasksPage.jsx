@@ -23,6 +23,20 @@ function TasksPage() {
 		}
 		setModalVisible(false);
 	}
+
+	function checkTask(id) {
+		if (id) {
+			axios
+				.put(`http://localhost:3000/tasks/${id}`)
+				.then((res) => {
+					console.log("It has been updated sir");
+					console.log(res.data);
+				})
+				.catch((error) => {
+					console.log("Put a helpful error message here");
+				});
+		}
+	}
 	useEffect(() => {
 		axios
 			.get("http://localhost:3000/tasks")
@@ -43,6 +57,24 @@ function TasksPage() {
 							{tasks.map((task) => (
 								<div className="card mb-3" key={task.id}>
 									<div className="card-body">
+										<div className="form-check form-check-inline">
+											<input
+												className="form-check-input"
+												type="checkbox"
+												value="true"
+												id="flexCheckDefault"
+												checked={task.done === 1}
+												onChange={() => {
+													checkTask(task.id);
+												}}
+											/>
+											<label
+												className="form-check-label"
+												htmlFor="flexCheckDefault"
+											>
+												Default checkbox
+											</label>
+										</div>
 										{task.id}, {task.name}, {task.done}
 									</div>
 								</div>
