@@ -1,6 +1,5 @@
 import { useState } from "react";
 import TasksPage from "./pages/TasksPage";
-import LoginPage from "./pages/LoginPage";
 
 function App() {
 	function checkIfLoggedIn() {
