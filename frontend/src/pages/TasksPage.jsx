@@ -72,23 +72,26 @@ function TasksPage() {
 												className="form-check-label"
 												htmlFor="flexCheckDefault"
 											>
-												Default checkbox
+												{task.name}
 											</label>
 										</div>
-										{task.id}, {task.name}, {task.done}
 									</div>
 								</div>
 							))}
+							<button
+								className="btn btn-primary"
+								onClick={() => setModalVisible(true)}
+							>
+								Add another
+							</button>
 						</div>
 					) : (
-						<p>Tasks loading</p>
+						<div class="d-flex justify-content-center">
+							<div class="spinner-border" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</div>
+						</div>
 					)}
-					<button
-						className="btn btn-primary"
-						onClick={() => setModalVisible(true)}
-					>
-						Add another
-					</button>
 				</div>
 			</div>
 			{modalVisible && (
