@@ -1,7 +1,10 @@
 import express from "express";
 import db from "./db/database";
 import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+const SECRET_KEY = "L$XvV]jyx6+Fc*kV3R{LdR!nG$`dH/Pq2@bN^~z8A$Bv3ME!5cGp";
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -28,6 +31,54 @@ function getAllTasks(res: any, successCode: number) {
 	});
 }
 
+app.post("/login", (req, res) => {
+	if (req.headers["authorization"]) {
+		let loginInfo = req.headers["authorization"].split(" ")[1];
+		let decodedInfo = atob(loginInfo);
+		let username = decodedInfo.split(":")[0];
+		let password = decodedInfo.split(":")[1];
+		db.get(
+			`SELECT * FROM users WHERE username = ?`,
+			[username],
+			function (error, row) {
+				if (error) {
+					res.status(400).send({
+						message: "Error executing the query.",
+					});
+				}
+				if (!row) {
+					res.status(401).send({
+						message: "Incorrect username/password",
+					});
+				}
+				const user = row as {
+					id: number;
+					username: string;
+					password: string;
+				};
+				bcrypt.compare(
+					user.password,
+					password.trim(),
+					(error, result) => {
+						if (result) {
+							let token = jwt.sign(
+								{ id: user.id, username: user.username },
+								SECRET_KEY
+							);
+							res.status(200).send({ token: token });
+						} else {
+							res.status(401).send({
+								message: "Incorrect username",
+							});
+						}
+					}
+				);
+			}
+		);
+	} else {
+		res.status(401).send({ message: "Missing required login details." });
+	}
+});
 app.get("/tasks", (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
