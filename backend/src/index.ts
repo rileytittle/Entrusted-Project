@@ -1,18 +1,22 @@
 import express from "express";
 import db from "./db/database";
 import cors from "cors";
+import path from "path";
 import ApiKeyChecker from "./utils/keyChecker.utils";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(express.json());
-app.use(
-	cors({
-		origin: "http://localhost:5173",
-	})
-);
 
+//cors set up for dev
+// app.use(
+// 	cors({
+// 		origin: "http://localhost:5173",
+// 	})
+// );
+
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 //TODO - add comment for function
 function getAllTasks(res: any, successCode: number) {
 	//query the database for all the records from task table
