@@ -4,6 +4,7 @@ import axios from "axios";
 
 function TasksPage() {
 	const [tasks, setTasks] = useState([]);
+	const [filter, setFilter] = useState("0");
 	const [modalVisible, setModalVisible] = useState(false);
 	const [newTaskName, setNewTaskName] = useState("");
 	const [loading, setLoading] = useState(true);
@@ -104,6 +105,17 @@ function TasksPage() {
 			<div className="card">
 				<div className="card-body">
 					<h5 className="card-title">Tasks</h5>
+					<select
+						className="form-select w-auto"
+						value={filter}
+						onChange={(e) => {
+							updateFilter(e.target.value);
+						}}
+					>
+						<option value="0">All Tasks</option>
+						<option value="1">Incomplete Tasks</option>
+						<option value="2">Completed Tasks</option>
+					</select>
 					{loading ? (
 						<div className="d-flex justify-content-center">
 							<div className="spinner-border" role="status">
@@ -118,7 +130,7 @@ function TasksPage() {
 								<div>
 									{tasks.map((task) => (
 										<div
-											className="card mb-3"
+											className="card mb-3 mt-3"
 											key={task.id}
 										>
 											<div className="card-body d-flex justify-content-between align-items-center">
