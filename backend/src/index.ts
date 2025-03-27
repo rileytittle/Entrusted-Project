@@ -1,8 +1,6 @@
 import express from "express";
 import db from "./db/database";
 import cors from "cors";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import ApiKeyChecker from "./utils/keyChecker.utils";
 
 const PORT = process.env.PORT || 3000;
