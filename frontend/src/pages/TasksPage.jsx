@@ -154,16 +154,16 @@ function TasksPage() {
 											</div>
 										</div>
 									))}
-									<button
-										className="btn btn-primary"
-										onClick={() => setModalVisible(true)}
-									>
-										Add another
-									</button>
 								</div>
 							) : (
 								<p>No tasks to display</p>
 							)}
+							<button
+								className="btn btn-primary"
+								onClick={() => setModalVisible(true)}
+							>
+								Add another
+							</button>
 						</div>
 					)}
 					{errorOccurred ? (
