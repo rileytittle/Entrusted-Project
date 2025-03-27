@@ -1,0 +1,30 @@
+/* Add animation to slide out */
+@keyframes slideOut {
+	0% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+}
+
+.card.slide-out {
+	animation: slideOut 0.3s ease-out forwards; /* Duration matches setTimeout */
+}
+
+@keyframes slideIn {
+	0% {
+		transform: translateX(-100%);
+		opacity: 0;
+	}
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+.card.slide-in {
+	animation: slideIn 0.2s ease-out forwards;
+}

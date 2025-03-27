@@ -58,16 +58,17 @@ app.post("/tasks", ApiKeyChecker, (req, res) => {
 				`INSERT INTO tasks (name, done)
 				VALUES (?, ?)`,
 				[req.body.task_name, 0],
-				(error) => {
+				function (error) {
 					if (error) {
 						return res.status(400).send({
 							message: "Error adding task",
 							error: error,
 						});
 					}
+					res.status(201).send({ id: this.lastID });
 				}
 			);
-			getAllTasks(res, 201);
+			//getAllTasks(res, 201);
 		} else {
 			//if task_name doesn't exist or isn't a string, send error message and 400 status code.
 			res.status(400).send({

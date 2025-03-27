@@ -1,42 +1,51 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import Modal from "bootstrap/js/dist/modal";
+import "./TasksPage.css";
 
 function TasksPage() {
 	const [tasks, setTasks] = useState([]);
 	const [filter, setFilter] = useState("-1");
-	const [modalVisible, setModalVisible] = useState(false);
 	const [newTaskName, setNewTaskName] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [errorOccurred, setErrorOccurred] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
+	const [deletingCard, setDeletingCard] = useState(null);
+	const [creatingCard, setCreatingCard] = useState(null);
 
 	function createTask() {
 		if (newTaskName) {
-			axios
-				.post(
-					"http://localhost:3000/tasks",
-					{
-						task_name: newTaskName,
-					},
-					{
-						headers: {
-							"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+			{
+				axios
+					.post(
+						"http://localhost:3000/tasks",
+						{
+							task_name: newTaskName,
 						},
-					}
-				)
-				.then((res) => {
-					setErrorMessage("");
-					setErrorOccurred(false);
-				})
-				.catch((error) => {
-					setErrorMessage("There was a problem creating a new task.");
-					setErrorOccurred(true);
-				});
-			setNewTaskName("");
+						{
+							headers: {
+								"x-api-key":
+									"5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+							},
+						}
+					)
+					.then((res) => {
+						setErrorMessage("");
+						setCreatingCard(res.data.id);
+						setErrorOccurred(false);
+						setTimeout(() => {
+							setCreatingCard(null);
+						}, 205);
+					})
+					.catch((error) => {
+						setErrorOccurred(true);
+						if (error.response) {
+							setErrorMessage(error.response.data.message);
+						}
+					});
+				setNewTaskName("");
+			}
 		}
-		setModalVisible(false);
 	}
 
 	function checkTask(id) {
@@ -56,30 +65,35 @@ function TasksPage() {
 					setErrorOccurred(false);
 				})
 				.catch((error) => {
-					setErrorMessage(
-						"There was a problem updating the task's status."
-					);
 					setErrorOccurred(true);
+					if (error.response) {
+						setErrorMessage(error.response.data.message);
+					}
 				});
 		}
 	}
 
 	function deleteTask(id) {
 		if (id) {
-			axios
-				.delete(`http://localhost:3000/tasks/${id}`, {
-					headers: {
-						"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
-					},
-				})
-				.then((res) => {
-					setErrorMessage("");
-					setErrorOccurred(false);
-				})
-				.catch((error) => {
-					setErrorMessage("There was a problem deleting the task.");
-					setErrorOccurred(true);
-				});
+			setDeletingCard(id);
+			setTimeout(() => {
+				axios
+					.delete(`http://localhost:3000/tasks/${id}`, {
+						headers: {
+							"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+						},
+					})
+					.then((res) => {
+						setErrorMessage("");
+						setErrorOccurred(false);
+					})
+					.catch((error) => {
+						setErrorOccurred(true);
+						if (error.response) {
+							setErrorMessage(error.response.data.message);
+						}
+					});
+			}, 300);
 		}
 	}
 	useEffect(() => {
@@ -105,7 +119,9 @@ function TasksPage() {
 			.catch((error) => {
 				setLoading(false);
 				setErrorOccurred(true);
-				//handle the error
+				if (error.response) {
+					setErrorMessage(error.response.data.message);
+				}
 			});
 	});
 
@@ -139,7 +155,15 @@ function TasksPage() {
 								<div>
 									{tasks.map((task) => (
 										<div
-											className="card mb-3 mt-3"
+											className={`card mb-3 mt-3 ${
+												deletingCard === task.id
+													? "slide-out"
+													: ""
+											}${
+												creatingCard === task.id
+													? "slide-in"
+													: ""
+											}`}
 											key={task.id}
 										>
 											<div className="card-body d-flex justify-content-between align-items-center">
@@ -180,7 +204,7 @@ function TasksPage() {
 								<p>No tasks to display</p>
 							)}
 							<button
-								className="btn btn-primary"
+								className="btn btn-primary mb-3"
 								data-bs-toggle="modal"
 								data-bs-target="#createTaskModal"
 							>
@@ -189,7 +213,9 @@ function TasksPage() {
 						</div>
 					)}
 					{errorOccurred ? (
-						<p>This should only show if an api error occurred</p>
+						<div className="alert alert-danger" role="alert">
+							{errorMessage}
+						</div>
 					) : (
 						<></>
 					)}
