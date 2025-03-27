@@ -6,9 +6,11 @@ you have two options.
 
 -   open up a terminal in the root directory.
 -   cd into the frontend directory.
+-   run npm i
 -   run "npm run build"
 -   when that is finished, cd back into the root directory,
     and then into the backend directory.
+-   run npm i
 -   run "npm run build"
 -   when that is finished, run "npm run start"
 -   you should see some messages pop up about it starting.

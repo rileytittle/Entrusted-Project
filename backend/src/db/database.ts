@@ -13,6 +13,22 @@ const db = new sqlite3.Database(dbPath, (e: Error | null) => {
 		console.error("Error opening database:", e.message);
 	} else {
 		console.log("Connected to SQLite database.");
+
+		db.run(
+			`
+			CREATE TABLE IF NOT EXISTS tasks (
+				id INTEGER PRIMARY KEY AUTOINCREMENT,
+				name TEXT NOT NULL,
+				done BOOLEAN DEFAULT FALSE
+			);`,
+			(error) => {
+				if (error) {
+					console.log("Error creating new table");
+				} else {
+					console.log("table created successfully");
+				}
+			}
+		);
 	}
 });
 
