@@ -6,6 +6,8 @@ function TasksPage() {
 	const [tasks, setTasks] = useState([]);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [newTaskName, setNewTaskName] = useState("");
+	const [loading, setLoading] = useState(true);
+	const [errorOccurred, setErrorOccurred] = useState(false);
 
 	function createTask() {
 		if (newTaskName) {
@@ -15,9 +17,11 @@ function TasksPage() {
 				})
 				.then((res) => {
 					console.log("will this cause a re-rendering???");
+					setErrorOccurred(false);
 				})
 				.catch((error) => {
 					console.log("Error posting new task");
+					setErrorOccurred(true);
 				});
 			setNewTaskName("");
 		}
@@ -31,9 +35,11 @@ function TasksPage() {
 				.then((res) => {
 					console.log("It has been updated sir");
 					console.log(res.data);
+					setErrorOccurred(false);
 				})
 				.catch((error) => {
 					console.log("Put a helpful error message here");
+					setErrorOccurred(true);
 				});
 		}
 	}
@@ -42,50 +48,22 @@ function TasksPage() {
 			.get("http://localhost:3000/tasks")
 			.then((res) => {
 				setTasks(res.data);
+				setLoading(false);
+				setErrorOccurred(false);
 			})
 			.catch((error) => {
+				setLoading(false);
+				setErrorOccurred(true);
 				//handle the error
 			});
 	});
+
 	return (
 		<>
 			<div className="card">
 				<div className="card-body">
 					<h5 className="card-title">Tasks</h5>
-					{tasks.length > 0 ? (
-						<div>
-							{tasks.map((task) => (
-								<div className="card mb-3" key={task.id}>
-									<div className="card-body">
-										<div className="form-check form-check-inline">
-											<input
-												className="form-check-input"
-												type="checkbox"
-												value="true"
-												id="flexCheckDefault"
-												checked={task.done === 1}
-												onChange={() => {
-													checkTask(task.id);
-												}}
-											/>
-											<label
-												className="form-check-label"
-												htmlFor="flexCheckDefault"
-											>
-												{task.name}
-											</label>
-										</div>
-									</div>
-								</div>
-							))}
-							<button
-								className="btn btn-primary"
-								onClick={() => setModalVisible(true)}
-							>
-								Add another
-							</button>
-						</div>
-					) : (
+					{loading ? (
 						<div className="d-flex justify-content-center">
 							<div className="spinner-border" role="status">
 								<span className="visually-hidden">
@@ -93,6 +71,55 @@ function TasksPage() {
 								</span>
 							</div>
 						</div>
+					) : (
+						<div>
+							{tasks.length > 0 ? (
+								<div>
+									{tasks.map((task) => (
+										<div
+											className="card mb-3"
+											key={task.id}
+										>
+											<div className="card-body">
+												<div className="form-check form-check-inline">
+													<input
+														className="form-check-input"
+														type="checkbox"
+														value="true"
+														id="flexCheckDefault"
+														checked={
+															task.done === 1
+														}
+														onChange={() => {
+															checkTask(task.id);
+														}}
+													/>
+													<label
+														className="form-check-label"
+														htmlFor="flexCheckDefault"
+													>
+														{task.name}
+													</label>
+												</div>
+											</div>
+										</div>
+									))}
+									<button
+										className="btn btn-primary"
+										onClick={() => setModalVisible(true)}
+									>
+										Add another
+									</button>
+								</div>
+							) : (
+								<p>No tasks to display</p>
+							)}
+						</div>
+					)}
+					{errorOccurred ? (
+						<p>This should only show if an api error occurred</p>
+					) : (
+						<></>
 					)}
 				</div>
 			</div>
