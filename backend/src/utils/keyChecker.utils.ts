@@ -8,8 +8,9 @@ let ApiKeyChecker = (req: Request, res: Response, next: NextFunction) => {
 	}
 	if (apiKey !== validApiKey) {
 		res.status(401).send({ message: "Invalid API key" });
+	} else {
+		next();
 	}
-	next();
 };
 
 export default ApiKeyChecker;

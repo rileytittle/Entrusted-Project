@@ -19,7 +19,7 @@ function TasksPage() {
 					.post(
 						"http://localhost:3000/tasks",
 						{
-							task_name: newTaskName,
+							name: newTaskName,
 						},
 						{
 							headers: {

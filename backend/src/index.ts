@@ -52,12 +52,12 @@ app.post("/tasks", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {
-		//check if task_name exists and is a string
-		if (req.body.task_name) {
+		//check if name exists and is a string
+		if (req.body.name) {
 			db.run(
 				`INSERT INTO tasks (name, done)
 				VALUES (?, ?)`,
-				[req.body.task_name, 0],
+				[req.body.name, 0],
 				function (error) {
 					if (error) {
 						return res.status(400).send({
@@ -70,7 +70,7 @@ app.post("/tasks", ApiKeyChecker, (req, res) => {
 			);
 			//getAllTasks(res, 201);
 		} else {
-			//if task_name doesn't exist or isn't a string, send error message and 400 status code.
+			//if name doesn't exist or isn't a string, send error message and 400 status code.
 			res.status(400).send({
 				message:
 					"Request must include the name of the task in string form",
