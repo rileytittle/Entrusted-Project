@@ -8,6 +8,7 @@ function TasksPage() {
 	const [newTaskName, setNewTaskName] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [errorOccurred, setErrorOccurred] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	function createTask() {
 		if (newTaskName) {
@@ -16,11 +17,11 @@ function TasksPage() {
 					task_name: newTaskName,
 				})
 				.then((res) => {
-					console.log("will this cause a re-rendering???");
+					setErrorMessage("");
 					setErrorOccurred(false);
 				})
 				.catch((error) => {
-					console.log("Error posting new task");
+					setErrorMessage("There was a problem creating a new task.");
 					setErrorOccurred(true);
 				});
 			setNewTaskName("");
@@ -33,12 +34,28 @@ function TasksPage() {
 			axios
 				.put(`http://localhost:3000/tasks/${id}`)
 				.then((res) => {
-					console.log("It has been updated sir");
-					console.log(res.data);
+					setErrorMessage("");
 					setErrorOccurred(false);
 				})
 				.catch((error) => {
-					console.log("Put a helpful error message here");
+					setErrorMessage(
+						"There was a problem updating the task's status."
+					);
+					setErrorOccurred(true);
+				});
+		}
+	}
+
+	function deleteTask(id) {
+		if (id) {
+			axios
+				.delete(`http://localhost:3000/tasks/${id}`)
+				.then((res) => {
+					setErrorMessage("");
+					setErrorOccurred(false);
+				})
+				.catch((error) => {
+					setErrorMessage("There was a problem deleting the task.");
 					setErrorOccurred(true);
 				});
 		}
@@ -80,7 +97,7 @@ function TasksPage() {
 											className="card mb-3"
 											key={task.id}
 										>
-											<div className="card-body">
+											<div className="card-body d-flex justify-content-between align-items-center">
 												<div className="form-check form-check-inline">
 													<input
 														className="form-check-input"
@@ -101,6 +118,15 @@ function TasksPage() {
 														{task.name}
 													</label>
 												</div>
+												<button
+													type="button"
+													className="btn btn-danger"
+													onClick={() => {
+														deleteTask(task.id);
+													}}
+												>
+													Delete
+												</button>
 											</div>
 										</div>
 									))}
