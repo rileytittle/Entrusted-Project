@@ -13,9 +13,17 @@ function TasksPage() {
 	function createTask() {
 		if (newTaskName) {
 			axios
-				.post("http://localhost:3000/tasks", {
-					task_name: newTaskName,
-				})
+				.post(
+					"http://localhost:3000/tasks",
+					{
+						task_name: newTaskName,
+					},
+					{
+						headers: {
+							"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+						},
+					}
+				)
 				.then((res) => {
 					setErrorMessage("");
 					setErrorOccurred(false);
@@ -32,7 +40,15 @@ function TasksPage() {
 	function checkTask(id) {
 		if (id) {
 			axios
-				.put(`http://localhost:3000/tasks/${id}`)
+				.put(
+					`http://localhost:3000/tasks/${id}`,
+					{},
+					{
+						headers: {
+							"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+						},
+					}
+				)
 				.then((res) => {
 					setErrorMessage("");
 					setErrorOccurred(false);
@@ -49,7 +65,11 @@ function TasksPage() {
 	function deleteTask(id) {
 		if (id) {
 			axios
-				.delete(`http://localhost:3000/tasks/${id}`)
+				.delete(`http://localhost:3000/tasks/${id}`, {
+					headers: {
+						"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+					},
+				})
 				.then((res) => {
 					setErrorMessage("");
 					setErrorOccurred(false);
@@ -62,7 +82,11 @@ function TasksPage() {
 	}
 	useEffect(() => {
 		axios
-			.get("http://localhost:3000/tasks")
+			.get("http://localhost:3000/tasks", {
+				headers: {
+					"x-api-key": "5fa3d7b0-0b1c-4e29-b467-8dfe2e5a1a7e",
+				},
+			})
 			.then((res) => {
 				setTasks(res.data);
 				setLoading(false);

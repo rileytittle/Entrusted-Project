@@ -3,6 +3,7 @@ import db from "./db/database";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import ApiKeyChecker from "./utils/keyChecker.utils";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -13,6 +14,7 @@ app.use(
 		origin: "http://localhost:5173",
 	})
 );
+
 //TODO - add comment for function
 function getAllTasks(res: any, successCode: number) {
 	//query the database for all the records from task table
@@ -30,7 +32,7 @@ function getAllTasks(res: any, successCode: number) {
 	});
 }
 
-app.get("/tasks", (req, res) => {
+app.get("/tasks", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {
@@ -44,7 +46,7 @@ app.get("/tasks", (req, res) => {
 	}
 });
 
-app.post("/tasks", (req, res) => {
+app.post("/tasks", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {
@@ -80,7 +82,7 @@ app.post("/tasks", (req, res) => {
 	}
 });
 
-app.delete("/tasks/:id", (req, res) => {
+app.delete("/tasks/:id", ApiKeyChecker, (req, res) => {
 	try {
 		if (!isNaN(parseInt(req.params.id))) {
 			db.run(
@@ -120,7 +122,7 @@ app.delete("/tasks/:id", (req, res) => {
 	}
 });
 //TODO - add comment for endpoint
-app.put("/tasks/:id", (req, res) => {
+app.put("/tasks/:id", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {

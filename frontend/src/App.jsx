@@ -13,11 +13,7 @@ function App() {
 	}
 	return (
 		<>
-			{checkIfLoggedIn() ? (
-				<TasksPage></TasksPage>
-			) : (
-				<LoginPage></LoginPage>
-			)}
+			<TasksPage></TasksPage>
 		</>
 	);
 }
