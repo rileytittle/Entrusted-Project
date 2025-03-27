@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import Modal from "bootstrap/js/dist/modal";
 
 function TasksPage() {
 	const [tasks, setTasks] = useState([]);
@@ -180,7 +181,8 @@ function TasksPage() {
 							)}
 							<button
 								className="btn btn-primary"
-								onClick={() => setModalVisible(true)}
+								data-bs-toggle="modal"
+								data-bs-target="#createTaskModal"
 							>
 								Add another
 							</button>
@@ -193,48 +195,42 @@ function TasksPage() {
 					)}
 				</div>
 			</div>
-			{modalVisible && (
-				<div className="modal fade show" style={{ display: "block" }}>
-					<div className="modal-dialog">
-						<div className="modal-content">
-							<div className="modal-header">
-								<h5 className="modal-title">Create New Task</h5>
-							</div>
-							<div className="modal-body">
-								<label htmlFor="name">Task name</label>
-								<input
-									name="name"
-									id="name"
-									type="text"
-									value={newTaskName}
-									onChange={(e) =>
-										setNewTaskName(e.target.value)
-									}
-								/>
-							</div>
-							<div className="modal-footer">
-								<button
-									type="button"
-									className="btn btn-secondary"
-									data-bs-dismiss="modal"
-									onClick={() => {
-										setModalVisible(false);
-									}}
-								>
-									Close
-								</button>
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={createTask}
-								>
-									Save changes
-								</button>
-							</div>
+			<div className="modal fade" id="createTaskModal" tabIndex="-1">
+				<div className="modal-dialog">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title">Create New Task</h5>
+						</div>
+						<div className="modal-body">
+							<label htmlFor="name">Task name</label>
+							<input
+								name="name"
+								id="name"
+								type="text"
+								value={newTaskName}
+								onChange={(e) => setNewTaskName(e.target.value)}
+							/>
+						</div>
+						<div className="modal-footer">
+							<button
+								type="button"
+								className="btn btn-secondary"
+								data-bs-dismiss="modal"
+							>
+								Close
+							</button>
+							<button
+								type="button"
+								className="btn btn-primary"
+								data-bs-dismiss="modal"
+								onClick={createTask}
+							>
+								Save changes
+							</button>
 						</div>
 					</div>
 				</div>
-			)}
+			</div>
 		</>
 	);
 }
