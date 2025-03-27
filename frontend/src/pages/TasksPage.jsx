@@ -42,6 +42,11 @@ function TasksPage() {
 						if (error.response) {
 							setErrorMessage(error.response.data.message);
 						}
+						if (sessionStorage.getItem("localTasks")) {
+							setTasks(
+								JSON.parse(sessionStorage.getItem("localTasks"))
+							);
+						}
 					});
 				setNewTaskName("");
 			}
@@ -70,6 +75,11 @@ function TasksPage() {
 					if (error.response) {
 						setErrorMessage(error.response.data.message);
 					}
+					if (sessionStorage.getItem("localTasks")) {
+						setTasks(
+							JSON.parse(sessionStorage.getItem("localTasks"))
+						);
+					}
 				});
 		}
 	}
@@ -94,6 +104,11 @@ function TasksPage() {
 						if (error.response) {
 							setErrorMessage(error.response.data.message);
 						}
+						if (sessionStorage.getItem("localTasks")) {
+							setTasks(
+								JSON.parse(sessionStorage.getItem("localTasks"))
+							);
+						}
 					});
 			}, 300);
 		}
@@ -106,8 +121,8 @@ function TasksPage() {
 				},
 			})
 			.then((res) => {
-				sessionStorage.setItem("localTasks", res.data);
-				console.log("Hello");
+				sessionStorage.setItem("localTasks", JSON.stringify(res.data));
+				console.log(filter);
 				if (filter === "-1") {
 					setTasks(res.data);
 				} else {
@@ -117,7 +132,6 @@ function TasksPage() {
 						)
 					);
 				}
-				//console.log(tasks)
 				setLoading(false);
 				setErrorOccurred(false);
 			})
@@ -127,11 +141,14 @@ function TasksPage() {
 				if (error.response) {
 					setErrorMessage(error.response.data.message);
 				}
+				if (sessionStorage.getItem("localTasks")) {
+					setTasks(JSON.parse(sessionStorage.getItem("localTasks")));
+				}
 			});
 	}
 	useEffect(() => {
 		getAllTasks();
-	}, []);
+	}, [filter]);
 
 	return (
 		<>
