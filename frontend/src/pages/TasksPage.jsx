@@ -4,7 +4,7 @@ import axios from "axios";
 
 function TasksPage() {
 	const [tasks, setTasks] = useState([]);
-	const [filter, setFilter] = useState("0");
+	const [filter, setFilter] = useState("-1");
 	const [modalVisible, setModalVisible] = useState(false);
 	const [newTaskName, setNewTaskName] = useState("");
 	const [loading, setLoading] = useState(true);
@@ -89,7 +89,15 @@ function TasksPage() {
 				},
 			})
 			.then((res) => {
-				setTasks(res.data);
+				if (filter === "-1") {
+					setTasks(res.data);
+				} else {
+					setTasks(
+						res.data.filter(
+							(task) => task.done === parseInt(filter)
+						)
+					);
+				}
 				setLoading(false);
 				setErrorOccurred(false);
 			})
@@ -109,12 +117,12 @@ function TasksPage() {
 						className="form-select w-auto"
 						value={filter}
 						onChange={(e) => {
-							updateFilter(e.target.value);
+							setFilter(e.target.value);
 						}}
 					>
-						<option value="0">All Tasks</option>
-						<option value="1">Incomplete Tasks</option>
-						<option value="2">Completed Tasks</option>
+						<option value="-1">All Tasks</option>
+						<option value="0">Incomplete Tasks</option>
+						<option value="1">Completed Tasks</option>
 					</select>
 					{loading ? (
 						<div className="d-flex justify-content-center">
