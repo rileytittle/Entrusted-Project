@@ -1,5 +1,9 @@
+# Cole's Entrusted Project
+
 To get the project up and running on your local computer,
 you have two options.
+
+## Running the App
 
 1. Run in production mode (Preferred Way)
 
@@ -29,15 +33,15 @@ you have two options.
 -   run "npm run dev"
 -   navigate to http://localhost:5173/ and you should see the app!
 
-API Request Schemas:
+## API Request Schemas:
 
-Get all Tasks:
+### Get all Tasks:
 
-ENDPOINT:
+#### ENDPOINT
 
 -   GET http://localhost:3000/tasks
 
-PAYLOAD:
+#### PAYLOAD
 
 -   Request body:
     -   none
@@ -46,7 +50,7 @@ PAYLOAD:
         "x-api-key":"api-key-value"
         }
 
-SUCCESSFUL RESPONSE:
+#### SUCCESSFUL RESPONSE
 
 -   Status: 200
 -   Body:
@@ -68,7 +72,7 @@ SUCCESSFUL RESPONSE:
         }
         }
 
-ERROR RESPONSE:
+#### ERROR RESPONSE
 
 -   Status: 400
 -   Body:
@@ -97,13 +101,13 @@ ERROR RESPONSE:
         }
         }
 
-Create new Task:
+### Create new Task:
 
-ENDPOINT:
+#### ENDPOINT
 
 -   POST http://localhost:3000/tasks
 
-PAYLOAD:
+#### PAYLOAD
 
 -   Request body:
     -   {
@@ -119,7 +123,7 @@ PAYLOAD:
         "x-api-key":"api-key-value"
         }
 
-SUCCESSFUL RESPONSE:
+#### SUCCESSFUL RESPONSE
 
 -   Status: 201
 -   Body:
@@ -132,7 +136,7 @@ SUCCESSFUL RESPONSE:
         }
         }
 
-ERROR RESPONSE:
+#### ERROR RESPONSE
 
 -   Status: 400 (Due to database error)
 -   Body:
@@ -171,13 +175,13 @@ ERROR RESPONSE:
         }
         }
 
-Delete a Task:
+### Delete a Task:
 
-ENDPOINT:
+#### ENDPOINT
 
 -   DELETE http://localhost:3000/tasks/:id
 
-PAYLOAD:
+#### PAYLOAD
 
 -   Header: {
     "x-api-key":"api-key-value"
@@ -186,7 +190,7 @@ PAYLOAD:
     "id":"task-id"
     }
 
-SUCCESSFUL RESPONSE
+#### SUCCESSFUL RESPONSE
 
 -   Status: 204
 -   Body:
@@ -199,7 +203,7 @@ SUCCESSFUL RESPONSE
         }
         }
 
-ERROR RESPONSE
+#### ERROR RESPONSE
 
 -   Status: 400 (Due to database error)
 -   Body:
@@ -247,13 +251,13 @@ ERROR RESPONSE
     }
     }
 
-Change status of Task:
+### Change status of Task:
 
-ENDPOINT:
+#### ENDPOINT
 
 -   PUT http://localhost:3000/tasks/:id
 
-PAYLOAD:
+#### PAYLOAD
 
 -   Header: {
     "x-api-key":"api-key-value"
@@ -262,7 +266,7 @@ PAYLOAD:
     "id":"task-id"
     }
 
-SUCCESSFUL RESPONSE:
+#### SUCCESSFUL RESPONSE
 
 -   Status: 200
 -   Body:
@@ -275,7 +279,7 @@ SUCCESSFUL RESPONSE:
         }
         }
 
-ERROR RESPONSE:
+#### ERROR RESPONSE
 
 -   Status: 400 (Due to database error)
 -   Body:
