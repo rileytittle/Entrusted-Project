@@ -4,12 +4,23 @@ import axios from "axios";
 import "./TasksPage.css";
 
 function TasksPage() {
+	//this state holds all the tasks fetched from the backend.
 	const [tasks, setTasks] = useState([]);
+
+	//this state is for setting the filter that affects which tasks are displayed
+	//and for storing the name to set newly created tasks.
 	const [filter, setFilter] = useState("-1");
 	const [newTaskName, setNewTaskName] = useState("");
+
+	//this state is for displaying the spinner when fetching tasks
 	const [loading, setLoading] = useState(true);
+
+	//these two states are for displaying error messages if the user
+	//does something incorrect or the api sends back an error code.
 	const [errorOccurred, setErrorOccurred] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
+
+	//these two states are for applying a css animation to tasks getting deleted and created.
 	const [deletingCard, setDeletingCard] = useState(null);
 	const [creatingCard, setCreatingCard] = useState(null);
 
