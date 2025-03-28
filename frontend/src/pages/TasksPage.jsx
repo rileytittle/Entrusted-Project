@@ -317,7 +317,7 @@ function TasksPage() {
 								data-bs-toggle="modal"
 								data-bs-target="#createTaskModal"
 							>
-								Add another
+								Add Task
 							</button>
 						</div>
 					)}
@@ -330,7 +330,9 @@ function TasksPage() {
 							<h5 className="modal-title">Create New Task</h5>
 						</div>
 						<div className="modal-body">
-							<label htmlFor="name">Task name</label>
+							<label className="new-task-label" htmlFor="name">
+								Task name
+							</label>
 							<input
 								name="name"
 								id="name"

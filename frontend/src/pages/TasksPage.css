@@ -1,4 +1,3 @@
-/* Add animation to slide out */
 @keyframes slideOut {
 	0% {
 		transform: translateX(0);
@@ -27,4 +26,8 @@
 
 .card.slide-in {
 	animation: slideIn 0.2s ease-out forwards;
+}
+
+.new-task-label {
+	margin-right: 1rem;
 }
