@@ -7,7 +7,9 @@ you need Node.js and npm installed.
 You can test if you have node.js installed with:
 
 -   node -v
-    If you do not have node installed you can download it here:
+
+If you do not have node installed you can download it here:
+
 -   https://nodejs.org/en/download.
 
 -   open up a terminal in the root directory.
