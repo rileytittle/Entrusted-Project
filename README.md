@@ -1,11 +1,14 @@
 # Cole's Entrusted Project
 
-To get the project up and running on your local computer,
-you have two options.
-
 ## Running the App
 
-1. Run in production mode (Preferred Way)
+To get the project up and running on your local computer,
+you need Node.js and npm installed.
+You can test if you have node.js installed with:
+
+-   node -v
+    If you do not have node installed you can download it here:
+-   https://nodejs.org/en/download.
 
 -   open up a terminal in the root directory.
 -   cd into the frontend directory.
@@ -18,20 +21,6 @@ you have two options.
 -   when that is finished, run "npm run start"
 -   you should see some messages pop up about it starting.
 -   Navigate to http://localhost:3000 and you should see the app!
-
-2. Run in a development mode (Requires slight code change)
-
--   change DEVELOPMENT true in the backend/src/index.ts
--   save file
--   open up a terminal in root directory
--   cd into the frontend directory
--   run "npm i"
--   run "npm run dev"
--   open up a separate terminal in the root directory
--   cd into backend directory
--   run "npm i"
--   run "npm run dev"
--   navigate to http://localhost:5173/ and you should see the app!
 
 ## API Request Schemas:
 
