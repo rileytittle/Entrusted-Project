@@ -6,13 +6,13 @@ import ApiKeyChecker from "./utils/keyChecker.utils";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-const DEVELOPMENT = true;
+const IN_DEVELOPMENT = false;
 app.use(express.json());
 
 //conditional to either serve static files or
 //use cors to allow api to talk to react frontend
 //hosted with vite dev server
-if (DEVELOPMENT) {
+if (IN_DEVELOPMENT) {
 	//cors set up for dev
 	app.use(
 		cors({
