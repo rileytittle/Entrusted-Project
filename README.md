@@ -49,18 +49,48 @@ PAYLOAD:
 SUCCESSFUL RESPONSE:
 
 -   Status: 200
--   Body:
-    -   {
-        [
-        {
-        "id":taskID,
-        "name":"Example name",
-        "done":false
-        },
-        {
-        "id":taskID,
-        "name":"Example name",
-        "done":true
-        }
-        ]
-        }
+-   Body: - {
+    "type": "array",
+    "items": {
+    "type": "object",
+    "properties": {
+    "id": {
+    "type": "number"
+    },
+    "name": {
+    "type": "string"
+    },
+    "done": {
+    "type": "number"
+    }
+    },
+    "required": ["id", "name", "done"]
+    }
+    }
+
+ERROR RESPONSE:
+
+-   Status: 400
+-   Body - {
+    "type":"object",
+    "properties":{
+    "message":{
+    "type":"string"
+    },
+    "error":{
+    "type":Sqlite3 error object
+    }
+    }
+    }
+-   Status: 500
+-   Body - {
+    "type":"object",
+    "properties":{
+    "message":{
+    "type":"string"
+    },
+    "error":{
+    "type":Try/Catch error object
+    }
+    }
+    }
