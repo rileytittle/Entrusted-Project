@@ -183,7 +183,6 @@ function TasksPage() {
 			})
 			.then((res) => {
 				sessionStorage.setItem("localTasks", JSON.stringify(res.data));
-				console.log(filter);
 				if (filter === "-1") {
 					setTasks(res.data);
 				} else {
