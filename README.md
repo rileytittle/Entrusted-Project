@@ -10,6 +10,8 @@ You can test if you have node.js installed with:
 
 If you do not have node installed you can download it here:
 
+Instructions:
+
 -   https://nodejs.org/en/download.
 
 -   open up a terminal in the root directory.
