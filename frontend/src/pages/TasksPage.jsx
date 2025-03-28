@@ -74,6 +74,11 @@ function TasksPage() {
 		}
 	}
 
+	/**
+	 * checkTask sends a request to the api to check or uncheck
+	 * a task. It sends the id of the task as a parameter.
+	 * It then calls getAllTasks() to refresh the list.
+	 */
 	function checkTask(id) {
 		if (id) {
 			axios
@@ -107,7 +112,11 @@ function TasksPage() {
 				});
 		}
 	}
-
+	/**
+	 * deleteTask sends a request to the api to delete a check.
+	 * It sends the id of the task as a parameter.
+	 * It then calls getAllTasks() to refresh the list.
+	 */
 	function deleteTask(id) {
 		if (id) {
 			setDeletingCard(id);
@@ -142,6 +151,18 @@ function TasksPage() {
 			}, 300);
 		}
 	}
+	/**
+	 * getAllTasks sends a http request to get all the tasks from
+	 * the API. The spinner is set to true by default so this function also sets
+	 * the spinner to false, so that when the call is done, whether it
+	 * succeeds or fails, the spinner goes away.
+	 * It also sets the local copy of the tasks to the version in state,
+	 * so that if the API has a critical failure and every call to it fails,
+	 * the result of the most recent successful call of getAllTasks is stored in
+	 * local storage and tasks is set to it.
+	 * This function also checks the current filter and filters the array of tasks
+	 * according to it.
+	 */
 	function getAllTasks() {
 		axios
 			.get("http://localhost:3000/tasks", {
@@ -176,9 +197,22 @@ function TasksPage() {
 				setErrorMessage("There was a problem sending your request");
 				if (sessionStorage.getItem("localTasks")) {
 					setTasks(JSON.parse(sessionStorage.getItem("localTasks")));
+					if (filter != "-1") {
+						setTasks(
+							tasks.filter(
+								(task) => task.done === parseInt(filter)
+							)
+						);
+					}
 				}
 			});
 	}
+	/**
+	 * useEffect is a react supplied hook that executes when the component is
+	 * first mounted and, because of the dependency array, every time the state of
+	 * the filter changes.
+	 * All it is doing is calling the getAllTasks() function.
+	 */
 	useEffect(() => {
 		getAllTasks();
 	}, [filter]);
