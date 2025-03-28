@@ -6,39 +6,48 @@ import ApiKeyChecker from "./utils/keyChecker.utils";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-
+const DEVELOPMENT = true;
 app.use(express.json());
 
-//cors set up for dev
-app.use(
-	cors({
-		origin: "http://localhost:5173",
-	})
-);
-
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
-//TODO - add comment for function
-function getAllTasks(res: any, successCode: number) {
-	//query the database for all the records from task table
-	db.all(`SELECT * FROM tasks`, [], (error, rows) => {
-		if (error) {
-			//if there was an error in the query execution, send 400 and error message
-			res.status(400).send({
-				message: "There was an error querying the database",
-				error: error,
-			});
-		} else {
-			//otherwise, send the result of the query
-			res.status(successCode).send(rows);
-		}
-	});
+//conditional to either serve static files or
+//use cors to allow api to talk to react frontend
+//hosted with vite dev server
+if (DEVELOPMENT) {
+	//cors set up for dev
+	app.use(
+		cors({
+			origin: "http://localhost:5173",
+		})
+	);
+} else {
+	//to serve static react files when project is built and started
+	app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 }
 
+/**
+ * this middleware queries the database for all
+ * records in the tasks table and sends it back in
+ * the response.
+ * Serves 200 and the result of the query if successful.
+ * Serves 400 if there is a database error or 500
+ * if any other error occurs
+ */
 app.get("/tasks", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
 	try {
-		getAllTasks(res, 200);
+		db.all(`SELECT * FROM tasks`, [], (error, rows) => {
+			if (error) {
+				//if there was an error in the query execution, send 400 and error message
+				res.status(400).send({
+					message: "There was an error querying the database",
+					error: error,
+				});
+			} else {
+				//otherwise, send the result of the query
+				res.status(200).send(rows);
+			}
+		});
 	} catch (e) {
 		//send 500 status code and error message, along with error object.
 		res.status(500).send({
@@ -48,6 +57,15 @@ app.get("/tasks", ApiKeyChecker, (req, res) => {
 	}
 });
 
+/**
+ * this middleware creates a new task record in the
+ * tasks table in the database.
+ * Serves 201 and the id of the created record if successful.
+ * Serves 400 if a name is not supplied or it it is
+ * an empty string; also serves 400 if a database
+ * error occurs.
+ * Serves 500 if there is any another error.
+ */
 app.post("/tasks", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
@@ -85,6 +103,14 @@ app.post("/tasks", ApiKeyChecker, (req, res) => {
 	}
 });
 
+/**
+ * this middleware deletes a record with an id matching the one
+ * supplied in the parameters.
+ * Serves 204 if successful.
+ * Serves 400 if there is a database error or if the id is not a number.
+ * Serves 404 if it cannot find a record matching the id.
+ * Serves 500 if any other error occurs.
+ */
 app.delete("/tasks/:id", ApiKeyChecker, (req, res) => {
 	try {
 		if (!isNaN(parseInt(req.params.id))) {
@@ -94,7 +120,7 @@ app.delete("/tasks/:id", ApiKeyChecker, (req, res) => {
 				[parseInt(req.params.id)],
 				function (error) {
 					if (error) {
-						res.status(500).send({
+						res.status(400).send({
 							message:
 								"An error occured while executing the query",
 							error: error,
@@ -124,7 +150,14 @@ app.delete("/tasks/:id", ApiKeyChecker, (req, res) => {
 		});
 	}
 });
-//TODO - add comment for endpoint
+/**
+ * this middleware flips the status of the done column
+ * of the record matching the id supplied in the parameters.
+ * Serves 200 if successful.
+ * Serves 400 if there is a database error or if the supplied id is not a number.
+ * Serves 404 if it cannot find a record with the supplied id.
+ * Serves 500 if any other error occurs.
+ */
 app.put("/tasks/:id", ApiKeyChecker, (req, res) => {
 	//include try/catch block to catch any unexpected errors and keep
 	//the server from crashing
