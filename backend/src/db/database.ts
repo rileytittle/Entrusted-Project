@@ -25,7 +25,7 @@ const db = new sqlite3.Database(dbPath, (e: Error | null) => {
 				if (error) {
 					console.log("Error creating new table");
 				} else {
-					console.log("table created successfully");
+					console.log("Query successful");
 				}
 			}
 		);
