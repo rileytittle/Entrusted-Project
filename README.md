@@ -326,3 +326,32 @@ you have two options.
     }
     }
     }
+
+### Design Choices and Notes
+
+-   I went with Bootstrap for my component classes and styles.
+-   I used Bootstrap's modal for the new task form because it feels
+    simpler and less clunky to a user than going to a new page for a form.
+    Just looks nicer than any other way to do a form.
+-   For error messages, I opted for a simple red box that appears above everything
+    except the title.
+    -   I originally had the error box popping up underneath everything but as I wrote this,
+        I realized that if there were a lot of tasks, the user might not immediately see the error message.
+        The same might be true if the user is at the bottom of the screen, but I
+        figured the top is better either way.
+-   One breakthrough moment I had was when I figured out how to get the modal to work properly.
+    -   I've never successfully used a bootstrap modal before this, so I originally
+        had it working very strangely, using a state variable, some inline styling, and some arrow functions.
+        I realized the modal was not using the animation it was supposed to be using, so
+        I looked into it and it turns out all I needed to do was add some attributes to my
+        add anothe button that would trigger Bootstrap's js and make the modal work properly.
+-   Another breakthrough was getting the filter functionality right.
+    -   I worked with a couple different solutions but each one had some sort of bug. I had to learn
+        more about the useEffect hook and the dependency attached to it to make the filter functionality work.
+    -   A note on this: I filtered on the frontend instead of the backend for three reasons:
+        -   One: I thought I read about the optional filter under the front-end fair.
+        -   Two: After I had implemented it, I figured I'd keep it that way to keep the backend simpler.
+        -   Three: I originally thought it would result in less API calls, but I was wrong and it ended up being the same
+            either way.
+-   Final note: I did the brunt of the work on the backend in less commits because I forgot to commit after each endpoint,
+    and creating APIs comes more naturally to me than frontend applications, so I did most of it in less time than the frontend.

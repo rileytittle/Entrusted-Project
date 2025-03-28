@@ -233,6 +233,13 @@ function TasksPage() {
 			<div className="card">
 				<div className="card-body">
 					<h5 className="card-title">Tasks</h5>
+					{errorOccurred ? (
+						<div className="alert alert-danger" role="alert">
+							{errorMessage}
+						</div>
+					) : (
+						<></>
+					)}
 					<select
 						className="form-select w-auto"
 						value={filter}
@@ -314,13 +321,6 @@ function TasksPage() {
 								Add another
 							</button>
 						</div>
-					)}
-					{errorOccurred ? (
-						<div className="alert alert-danger" role="alert">
-							{errorMessage}
-						</div>
-					) : (
-						<></>
 					)}
 				</div>
 			</div>
