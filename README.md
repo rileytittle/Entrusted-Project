@@ -39,7 +39,12 @@ PAYLOAD:
 
 -   Request body:
     -   {
-        "name":"Example task name"
+        "type":"object",
+            "properties":{
+                "name":{
+                "type":"string"
+                }
+            }
         }
 -   Header:
     -   {
