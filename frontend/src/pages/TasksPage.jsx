@@ -29,9 +29,14 @@ function TasksPage() {
 						}
 					)
 					.then((res) => {
-						setErrorMessage("");
 						setCreatingCard(res.data.id);
-						setErrorOccurred(false);
+						if (res.status >= 400) {
+							setErrorOccurred(true);
+							setErrorMessage(res.data.message);
+						} else {
+							setErrorOccurred(false);
+							setErrorMessage("");
+						}
 						setTimeout(() => {
 							setCreatingCard(null);
 						}, 205);
@@ -50,6 +55,9 @@ function TasksPage() {
 					});
 				setNewTaskName("");
 			}
+		} else {
+			setErrorOccurred(true);
+			setErrorMessage("You must enter a name for the task");
 		}
 	}
 
@@ -66,8 +74,13 @@ function TasksPage() {
 					}
 				)
 				.then((res) => {
-					setErrorMessage("");
-					setErrorOccurred(false);
+					if (res.status >= 400) {
+						setErrorOccurred(true);
+						setErrorMessage(res.data.message);
+					} else {
+						setErrorOccurred(false);
+						setErrorMessage("");
+					}
 					getAllTasks();
 				})
 				.catch((error) => {
@@ -95,8 +108,13 @@ function TasksPage() {
 						},
 					})
 					.then((res) => {
-						setErrorMessage("");
-						setErrorOccurred(false);
+						if (res.status >= 400) {
+							setErrorOccurred(true);
+							setErrorMessage(res.data.message);
+						} else {
+							setErrorOccurred(false);
+							setErrorMessage("");
+						}
 						getAllTasks();
 					})
 					.catch((error) => {
@@ -133,7 +151,13 @@ function TasksPage() {
 					);
 				}
 				setLoading(false);
-				setErrorOccurred(false);
+				if (res.status >= 400) {
+					setErrorOccurred(true);
+					setErrorMessage(res.data.message);
+				} else {
+					setErrorOccurred(false);
+					setErrorMessage("");
+				}
 			})
 			.catch((error) => {
 				setLoading(false);

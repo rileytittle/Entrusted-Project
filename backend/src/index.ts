@@ -53,7 +53,7 @@ app.post("/tasks", ApiKeyChecker, (req, res) => {
 	//the server from crashing
 	try {
 		//check if name exists and is a string
-		if (req.body.name) {
+		if (req.body.name && req.body.name != "") {
 			db.run(
 				`INSERT INTO tasks (name, done)
 				VALUES (?, ?)`,
