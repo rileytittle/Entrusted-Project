@@ -12,9 +12,18 @@ function TasksPage() {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [deletingCard, setDeletingCard] = useState(null);
 	const [creatingCard, setCreatingCard] = useState(null);
+
+	/**
+	 * createTask sends a http request to the API
+	 * to create a new task record in the database.
+	 * It then calls get allTasks() to refresh the
+	 * task list.
+	 */
 	function createTask() {
+		//if a name was provided in the form, continue
 		if (newTaskName) {
 			{
+				//make http request
 				axios
 					.post(
 						"http://localhost:3000/tasks",
@@ -29,7 +38,10 @@ function TasksPage() {
 						}
 					)
 					.then((res) => {
+						//if no error occured, set creatingCard to the id that was returned
+						//so that we can apply a css animation
 						setCreatingCard(res.data.id);
+						//if
 						if (res.status >= 400) {
 							setErrorOccurred(true);
 							setErrorMessage(res.data.message);
@@ -44,9 +56,9 @@ function TasksPage() {
 					})
 					.catch((error) => {
 						setErrorOccurred(true);
-						if (error.response) {
-							setErrorMessage(error.response.data.message);
-						}
+						setErrorMessage(
+							"There was a problem sending your request"
+						);
 						if (sessionStorage.getItem("localTasks")) {
 							setTasks(
 								JSON.parse(sessionStorage.getItem("localTasks"))
@@ -56,6 +68,7 @@ function TasksPage() {
 				setNewTaskName("");
 			}
 		} else {
+			//if no name was supplied, alert user
 			setErrorOccurred(true);
 			setErrorMessage("You must enter a name for the task");
 		}
@@ -85,9 +98,7 @@ function TasksPage() {
 				})
 				.catch((error) => {
 					setErrorOccurred(true);
-					if (error.response) {
-						setErrorMessage(error.response.data.message);
-					}
+					setErrorMessage("There was a problem sending your request");
 					if (sessionStorage.getItem("localTasks")) {
 						setTasks(
 							JSON.parse(sessionStorage.getItem("localTasks"))
@@ -119,9 +130,9 @@ function TasksPage() {
 					})
 					.catch((error) => {
 						setErrorOccurred(true);
-						if (error.response) {
-							setErrorMessage(error.response.data.message);
-						}
+						setErrorMessage(
+							"There was a problem sending your request"
+						);
 						if (sessionStorage.getItem("localTasks")) {
 							setTasks(
 								JSON.parse(sessionStorage.getItem("localTasks"))
@@ -162,9 +173,7 @@ function TasksPage() {
 			.catch((error) => {
 				setLoading(false);
 				setErrorOccurred(true);
-				if (error.response) {
-					setErrorMessage(error.response.data.message);
-				}
+				setErrorMessage("There was a problem sending your request");
 				if (sessionStorage.getItem("localTasks")) {
 					setTasks(JSON.parse(sessionStorage.getItem("localTasks")));
 				}
@@ -221,7 +230,7 @@ function TasksPage() {
 														className="form-check-input"
 														type="checkbox"
 														value="true"
-														id="flexCheckDefault"
+														id="taskCheckbox"
 														checked={
 															task.done === 1
 														}
@@ -231,7 +240,7 @@ function TasksPage() {
 													/>
 													<label
 														className="form-check-label"
-														htmlFor="flexCheckDefault"
+														htmlFor="taskCheckbox"
 													>
 														{task.name}
 													</label>
